@@ -22,7 +22,16 @@ public class WordSearch{
      *separated by newlines.
      */
     public String toString(){
-      return null;
+      String newstr = "";
+      for(int i = 0; i < data.length; i++){
+        if(i > 0){
+          newstr += "\n";
+        }
+        for(int x = 0; x < data[i].length; x++){
+          newstr+= data[i][x] + " ";
+        }
+      }
+      return newstr;
     }
 
 
