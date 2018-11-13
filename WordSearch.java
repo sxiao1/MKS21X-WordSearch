@@ -3,19 +3,19 @@ import java.util.Scanner;
 import java.util.ArrayList; //random, scanner, arraylist
 import java.io.File;
 import java.io.FileNotFoundException; //file, filenotfoundexception
+
 public class WordSearch{
-    private char[][]data;
+    private char[][] data;
     private int seed;
     private Random randgen;
     private ArrayList<String>wordsToAdd;
     private ArrayList<String>wordsAdded;
 
     public WordSearch(int rows,int cols,String fileName){
-      seed = (int)(Math.random());
-      randgen = new Random(seed);
+      randgen = new Random();
       data = new char[rows][cols];
-      wordsAdded = new ArrayList<String>();
-      wordsToAdd = new ArrayList<String>();
+      wordsAdded = new ArrayList<>();
+      wordsToAdd = new ArrayList<>();
       for (int i = 0; i < rows; i ++){
         for(int x = 0; x < cols; x++){
           data[i][x] = '_';
@@ -31,12 +31,14 @@ public class WordSearch{
       } catch (FileNotFoundException e){
         e.printStackTrace();
       }
+      addAllWords();
     }
 
     public WordSearch(int rows,int cols,String fileName, int randSeed){
       this(rows, cols, fileName);
       randgen = new Random(randSeed);
       seed = randSeed;
+      addAllWords();
     }
 
     private void clear(){
