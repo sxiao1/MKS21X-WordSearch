@@ -1,5 +1,8 @@
-import java.util.*; //random, scanner, arraylist
-import java.io.*; //file, filenotfoundexception
+import java.util.Random;
+import java.util.Scanner;
+import java.util.ArrayList; //random, scanner, arraylist
+import java.io.File;
+import java.io.FileNotFoundException; //file, filenotfoundexception
 public class WordSearch{
     private char[][]data;
     private int seed;
