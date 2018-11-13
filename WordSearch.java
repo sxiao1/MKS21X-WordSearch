@@ -5,6 +5,22 @@ import java.io.File;
 import java.io.FileNotFoundException; //file, filenotfoundexception
 
 public class WordSearch{
+	public static void main(String[]args){
+		if(args.length > 0){
+			String fileName = args[0];
+	     	try{
+        	File f = new File(fileName);
+        	Scanner in = new Scanner(f);
+        		while(in.hasNext()){
+          		String word = in.nextLine();	
+          		//wordsToAdd.add(word);
+			}
+		}catch (FileNotFoundException e){
+        		e.printStackTrace();
+      		}
+        	}
+	
+	}
     private char[][] data;
     private int seed;
     private Random randgen;
@@ -20,16 +36,6 @@ public class WordSearch{
         for(int x = 0; x < cols; x++){
           data[i][x] = '_';
         }
-      }
-      try{
-        File fi = new File(fileName);
-        Scanner in = new Scanner(fi);
-        while(in.hasNext()){
-          String word = in.nextLine();
-          wordsToAdd.add(word);
-        }
-      } catch (FileNotFoundException e){
-        e.printStackTrace();
       }
       addAllWords();
     }
