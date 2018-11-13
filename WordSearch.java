@@ -1,12 +1,39 @@
+import java.util.*; //random, scanner, arraylist
+import java.io.*; //file, filenotfoundexception
 public class WordSearch{
     private char[][]data;
-    public WordSearch(int rows,int cols){
+    private int seed;
+    private Random randgen;
+    private ArrayList<String>wordsToAdd;
+    private ArrayList<String>wordsAdded;
+
+    public WordSearch(int rows,int cols,String fileName){
+      seed = (int)(Math.random());
+      randgen = new Random(seed);
       data = new char[rows][cols];
+      wordsAdded = new ArrayList<String>();
+      wordsToAdd = new ArrayList<String>();
       for (int i = 0; i < rows; i ++){
         for(int x = 0; x < cols; x++){
           data[i][x] = '_';
         }
       }
+      try{
+        File fi = new File(fileName);
+        Scanner in = new Scanner(fi);
+        while(in.hasNext()){
+          String word = in.nextLine();
+          wordsToAdd.add(word);
+        }
+      } catch (FileNotFoundException e){
+        e.printStackTrace();
+      }
+    }
+
+    public WordSearch(int rows,int cols,String fileName, int randSeed){
+      this(rows, cols, fileName);
+      randgen = new Random(randSeed);
+      seed = randSeed;
     }
 
     private void clear(){
@@ -16,21 +43,56 @@ public class WordSearch{
         }
       }
     }
+    private boolean addWord( String word, int r, int c, int rowIncrement, int colIncrement){
+      if (rowIncrement == 0 && colIncrement ==0){
+	       return false;
+	   }
+     try{
+       if(r < 0 || c < 0 || r >= data.length || c >= data[r].length){
+         return false;
+       }
+       for( int i = 0; i < word.length(); i ++){
+         if (data[r][c] != '_' && data[r][c]!= word.charAt(i)){
+           return false;
+         }
+         r += rowIncrement;
+         c += colIncrement;
+       }
+       wordsAdded.add(word);
+       wordsToAdd.remove(word);
 
-    /**Each row is a new line, there is a space between each letter
-     *@return a String with each character separated by spaces, and rows
-     *separated by newlines.
-     */
+     }catch (ArrayIndexOutOfBoundsException e){
+       return false;
+     } catch (IndexOutOfBoundsException e){
+       return false;
+     }
+     return true;
+   }
+
+   private boolean addAllWords(){
+     int num = 0;
+     while(num < 100 && wordsToAdd.size() > 0){
+       int row = randgen.nextInt(data.length);
+       int col = randgen.nextInt(data[0].length);
+       int colIncrement = randgen.nextInt(3);
+       int rowIncrement = randgen.nextInt(3);
+       String newword = wordsToAdd.get(randgen.nextInt(wordsToAdd.size()));
+       addWord(newword, row, col, rowIncrement, colIncrement);
+       num ++;
+     }
+     return true;
+   }
+
+
     public String toString(){
-      String newstr = "";
+      String newstr = "|";
       for(int i = 0; i < data.length; i++){
-        if(i > 0){
-          newstr += "\n";
-        }
         for(int x = 0; x < data[i].length; x++){
           newstr+= data[i][x] + " ";
         }
-      }
+        newstr += "|";
+        newstr += "\n |";
+        }
       return newstr;
     }
     public boolean addWordHorizontal(String word,int row, int col){
