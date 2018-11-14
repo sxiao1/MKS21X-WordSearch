@@ -16,11 +16,6 @@ public class WordSearch{
       data = new char[rows][cols];
       wordsAdded = new ArrayList<>();
       wordsToAdd = new ArrayList<>();
-      for (int i = 0; i < rows; i ++){
-        for(int x = 0; x < cols; x++){
-          data[i][x] = '_';
-        }
-      }
       try{
         File fi = new File(fileName);
         Scanner in = new Scanner(fi);
@@ -29,15 +24,28 @@ public class WordSearch{
           wordsToAdd.add(word);
         }
       } catch (FileNotFoundException e){
-        e.printStackTrace();
+        System.out.println("File not found");
+        System.exit(1);
       }
       addAllWords();
     }
 
     public WordSearch(int rows,int cols,String fileName, int randSeed){
-      this(rows, cols, fileName);
       randgen = new Random(randSeed);
       seed = randSeed;
+      wordsAdded = new ArrayList<>();
+      wordsToAdd = new ArrayList<>();
+      try{
+        File fi = new File(fileName);
+        Scanner in = new Scanner(fi);
+        while(in.hasNext()){
+          String word = in.next();
+          wordsToAdd.add(word);
+        }
+      } catch (FileNotFoundException e){
+        System.out.println("File not found");
+        System.exit(1);
+      }
       addAllWords();
     }
 
@@ -48,7 +56,9 @@ public class WordSearch{
         }
       }
     }
-    private boolean addWord( String word, int r, int c, int rowIncrement, int colIncrement){
+    public boolean addWord( String word, int r, int c, int rowIncrement, int colIncrement){
+      int row = r;
+      int col = c;
       if (rowIncrement == 0 && colIncrement ==0){
 	       return false;
 	   }
@@ -57,13 +67,20 @@ public class WordSearch{
          return false;
        }
        for( int i = 0; i < word.length(); i ++){
-         if (data[r][c] != '_' && data[r][c]!= word.charAt(i)){
+         if (data[row][col] != '_' && data[row][col]!= word.charAt(i)){
            return false;
          }
-         r += rowIncrement;
-         c += colIncrement;
+         row += rowIncrement;
+         col += colIncrement;
        }
-       wordsAdded.add(word);
+       row = r;
+       col = c;
+       for(int i = 0l i < word.length(); i++){
+         data[row][col] = word.charAt(i);
+         row += rowIncrement;
+         col += colIncrement;
+       }
+        wordsAdded.add(word);
        wordsToAdd.remove(word);
 
      }catch (ArrayIndexOutOfBoundsException e){
@@ -74,16 +91,14 @@ public class WordSearch{
      return true;
    }
 
-   private boolean addAllWords(){
-     int num = 0;
-     while(num < 100 && wordsToAdd.size() > 0){
-       int row = randgen.nextInt(data.length);
-       int col = randgen.nextInt(data[0].length);
-       int colIncrement = randgen.nextInt(3);
-       int rowIncrement = randgen.nextInt(3);
-       String newword = wordsToAdd.get(randgen.nextInt(wordsToAdd.size()));
-       addWord(newword, row, col, rowIncrement, colIncrement);
-       num ++;
+   public boolean addAllWords(){
+     for(int i = 0; i < wordsToAdd.size(); i ++){
+       int col = Math.abs(randgen.nextInt() % data.length );
+       int row = Math.abs(randgen.nextInt() % data[0].length );
+       int rowIncrement = randgen.nextInt() % 2;
+       int colIncrement = randgen.nextInt() % 2;
+       addWord(wordsToAdd.get(i), row, col, rowIncrement, colIncrement);
+       i = i - 1;
      }
      return true;
    }
@@ -115,17 +130,6 @@ public class WordSearch{
       return true;
     }
 
-   /**Attempts to add a given word to the specified position of the WordGrid.
-     *The word is added from top to bottom, must fit on the WordGrid, and must
-     *have a corresponding letter to match any letters that it overlaps.
-     *
-     *@param word is any text to be added to the word grid.
-     *@param row is the vertical locaiton of where you want the word to start.
-     *@param col is the horizontal location of where you want the word to start.
-     *@return true when the word is added successfully. When the word doesn't fit,
-     *or there are overlapping letters that do not match, then false is returned.
-     *and the board is NOT modified.
-     */
     public boolean addWordVertical(String word,int row, int col){
       if(row + word.length() > data.length && row > data.length && row < 0 && col < 0 && col > data[row].length){
         return false;
