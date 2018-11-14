@@ -75,7 +75,7 @@ public class WordSearch{
        }
        row = r;
        col = c;
-       for(int i = 0l i < word.length(); i++){
+       for(int i = 0; i < word.length(); i++){
          data[row][col] = word.charAt(i);
          row += rowIncrement;
          col += colIncrement;
