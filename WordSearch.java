@@ -11,9 +11,10 @@ public class WordSearch{
     private ArrayList<String>wordsToAdd;
     private ArrayList<String>wordsAdded;
 
-    public WordSearch(int rows,int cols,String fileName){
+    public WordSearch(int rows,int cols,String fileName, boolean answer){
       randgen = new Random();
       data = new char[rows][cols];
+      clear();
       wordsAdded = new ArrayList<>();
       wordsToAdd = new ArrayList<>();
       try{
@@ -24,13 +25,13 @@ public class WordSearch{
           wordsToAdd.add(word);
         }
       } catch (FileNotFoundException e){
-        System.out.println("File not found");
+        System.out.println("File not found" + fileName);
         System.exit(1);
       }
       addAllWords();
     }
 
-    public WordSearch(int rows,int cols,String fileName, int randSeed){
+    public WordSearch(int rows,int cols,String fileName, int randSeed, boolean answer){
       randgen = new Random(randSeed);
       seed = randSeed;
       wordsAdded = new ArrayList<>();
@@ -43,7 +44,7 @@ public class WordSearch{
           wordsToAdd.add(word);
         }
       } catch (FileNotFoundException e){
-        System.out.println("File not found");
+        System.out.println("File not found" + fileName);
         System.exit(1);
       }
       addAllWords();
@@ -105,13 +106,13 @@ public class WordSearch{
 
 
     public String toString(){
-      String newstr = "|";
+      String newstr = "";
       for(int i = 0; i < data.length; i++){
+	newstr += "|";
         for(int x = 0; x < data[i].length; x++){
           newstr+= data[i][x] + " ";
         }
-        newstr += "|";
-        newstr += "\n |";
+        newstr += "|/n";
         }
       return newstr;
     }
