@@ -11,8 +11,28 @@ public class WordSearch{
     private ArrayList<String>wordsToAdd;
     private ArrayList<String>wordsAdded;
 
-    public WordSearch(int rows,int cols,String fileName, boolean answer){
-      randgen = new Random();
+    public WordSearch(int rows, int cols, String fileName){
+      seed = (int)(Math.random()*100000);
+      randgen = new Random(seed);
+      data = new char[rows][cols];
+      clear();
+      wordsAdded = new ArrayList<>();
+      wordsToAdd = new ArrayList<>();
+      try{
+        File fi = new File(fileName);
+        Scanner in = new Scanner(fi);
+        while(in.hasNext()){
+          String word = in.nextLine();
+          wordsToAdd.add(word);
+        }
+      } catch (FileNotFoundException e){
+        System.out.println("File not found" + fileName);
+        System.exit(1);
+      }
+      addAllWords();
+    }
+    public WordSearch(int rows,int cols,String fileName, int randSeed){
+      seed = randSeed;
       data = new char[rows][cols];
       clear();
       wordsAdded = new ArrayList<>();
@@ -32,7 +52,9 @@ public class WordSearch{
     }
 
     public WordSearch(int rows,int cols,String fileName, int randSeed, boolean answer){
-      randgen = new Random(randSeed);
+      seed = randSeed;
+      data = new char[rows][cols];
+      clear();
       seed = randSeed;
       wordsAdded = new ArrayList<>();
       wordsToAdd = new ArrayList<>();
@@ -49,6 +71,7 @@ public class WordSearch{
       }
       addAllWords();
     }
+
 
     private void clear(){
       for(int i = 0; i < data.length; i ++){
