@@ -20,10 +20,6 @@ public class WordSearch{
       clear();
       wordsAdded = new ArrayList<>();
       wordsToAdd = new ArrayList<>();
-      if(rows < 0 || cols < 0){
-        System.out.println("Enter nonnegative arguments");
-        System.exit(1);
-      }
       try{
         File fi = new File(fileName);
         Scanner in = new Scanner(fi);
@@ -47,14 +43,6 @@ public class WordSearch{
       clear();
       wordsAdded = new ArrayList<>();
       wordsToAdd = new ArrayList<>();
-      if(rows < 0 || cols < 0){
-        System.out.println("Enter nonnegative arguments");
-        System.exit(1);
-      }
-      if(randSeed < 0 || randSeed > 10000){
-        System.out.println("Enter a seed in the range of 0-10000");
-        System.exit(1);
-      }
       try{
         File fi = new File(fileName);
         Scanner in = new Scanner(fi);
@@ -71,14 +59,6 @@ public class WordSearch{
     }
 
     public WordSearch(int rows,int cols,String fileName, int randSeed, boolean answer){
-      if(randSeed < 0 || randSeed > 10000){
-        System.out.println("Enter a seed in the range of 0-10000");
-        System.exit(1);
-      }
-      if(rows < 0 || cols < 0){
-        System.out.println("Enter nonnegative arguments");
-        System.exit(1);
-      }
       seed = randSeed;
       randgen = new Random (randSeed);
       data = new char[rows][cols];
@@ -253,14 +233,34 @@ public class WordSearch{
         System.out.println("Need 3 or more arguments");
       }
       if(args.length == 3){
+        if( Integer.parseInt(args[0]) < 0 || Integer.parseInt(args[1]) < 0){
+          System.out.println("Enter nonnegative arguments");
+          System.exit(1);
+        }
         WordSearch s = new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2]);
         System.out.println(s);
       }
       if(args.length == 4){
+        if( Integer.parseInt(args[0]) < 0 || Integer.parseInt(args[1]) < 0){
+          System.out.println("Enter nonnegative arguments");
+          System.exit(1);
+        }
+        if(Integer.parseInt(args[3]) < 0 || Integer.parseInt(args[3]) > 10000){
+          System.out.println("Enter a seed in the range of 0-10000");
+          System.exit(1);
+        }
         WordSearch s = new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3]));
         System.out.println(s);
       }
       if(args.length == 5){
+        if( Integer.parseInt(args[0]) < 0 || Integer.parseInt(args[1]) < 0){
+          System.out.println("Enter nonnegative arguments");
+          System.exit(1);
+        }
+        if(Integer.parseInt(args[3]) < 0 || Integer.parseInt(args[3]) > 10000){
+          System.out.println("Enter a seed in the range of 0-10000");
+          System.exit(1);
+        }
         WordSearch s = new WordSearch(Integer.parseInt(args[0]), Integer.parseInt(args[1]), args[2], Integer.parseInt(args[3]), Boolean.parseBoolean(args[4]));
         System.out.println(s);
       }
