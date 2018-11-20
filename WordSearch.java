@@ -26,7 +26,6 @@ public class WordSearch{
         while(in.hasNext()){
           String word = in.nextLine();
           wordsToAdd.add(word);
-          System.out.println(word);
         }
       } catch (FileNotFoundException e){
         System.out.println("File not found" + fileName);
@@ -161,13 +160,15 @@ public class WordSearch{
    }
 
    public boolean addAllWords(){
-     for(int i = 0; i < wordsToAdd.size(); i ++){
-       int col = Math.abs(randgen.nextInt() % data.length );
-       int row = Math.abs(randgen.nextInt() % data[0].length );
+     int count = 0;
+     while(count < 1000 && wordsToAdd.size() > 0){
+       int row = Math.abs(randgen.nextInt() % data.length );
+       int col = Math.abs(randgen.nextInt() % data[0].length );
        int rowIncrement = randgen.nextInt() % 2;
        int colIncrement = randgen.nextInt() % 2;
-       addWord(wordsToAdd.get(i), row, col, rowIncrement, colIncrement);
-       i = i - 1;
+       String newWord = wordsToAdd.get(randgen.nextInt(wordsToAdd.size()));
+       addWord(newWord, row, col, rowIncrement, colIncrement);
+       count ++;
      }
      fillIn();
      return true;
